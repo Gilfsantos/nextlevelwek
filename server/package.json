@@ -8,7 +8,7 @@
     "knex:seed": "knex --knexfile knexfile.ts seed:run",
     "knex:migrate": "knex --knexfile knexfile.ts migrate:latest"
   },
-  "keywords": [],
+  "keywords": [], 
   "author": "", 
   "license": "ISC",
   "dependencies": {

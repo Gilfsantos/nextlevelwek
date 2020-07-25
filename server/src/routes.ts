@@ -36,6 +36,7 @@ const {
 } = request.body
 
 await knex('points').insert({
+
     image: 'image-fake',
     name,
     email,
