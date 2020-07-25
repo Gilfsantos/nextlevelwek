@@ -35,7 +35,7 @@ const {
 
 } = request.body
 
-await knex('points').insert({
+const ids = await knex('points').insert({
 
     image: 'image-fake',
     name,
@@ -47,6 +47,14 @@ await knex('points').insert({
     uf
 
 });
+
+const pointItens = itens.map((item_id:number) => {
+    return {
+        item_id,
+        point_id: ids[0],
+    };
+} )
+await knex('points_itens').insert(pointItens);
 
 return response.json({success: true});
 });
