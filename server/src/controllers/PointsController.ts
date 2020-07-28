@@ -3,6 +3,19 @@ import knex from '../database/connection';
 
 
 class pointsController {
+    async show(request:Request, response: Response) {
+        const { id } = request.params;
+
+        const point = await knex('point').where('id', id).first();
+
+        if (!point) {
+            return response.status(400).json({ message: 'point not found'});
+
+        }
+        return response.json(point);
+    } 
+
+
    
     
     async create(request:Request, response:Response)  {
