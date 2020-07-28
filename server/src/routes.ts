@@ -14,5 +14,7 @@ routes.get('/itens', itensController.index );
     // select * from itens
     // index, show, create, update, delete
 routes.post('/points', pointsController.create);
-routes.post('/points/:id', pointsController.show);
+routes.get('/points/:id', pointsController.show);
+routes.get('/points', pointsController.index);
+
     export default routes;

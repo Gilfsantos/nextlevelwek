@@ -3,16 +3,37 @@ import knex from '../database/connection';
 
 
 class pointsController {
-    async show(request:Request, response: Response) {
+    async index(request: Request, response: Response) {
+        const { city, uf, itens } = request.query;
+
+        const parsedItens = String(itens).split(',').map(item => Number(item.trim()));
+
+        const points = await knex('points')
+        .join('points_itens', 'points.id', '=', 'points_itens.point_id')
+        .whereIn('points_itens.item_id', parsedItens)
+        .where('city', String(city))
+        .where('uf', String(uf))
+        .distinct()
+        .select('points.*');
+       
+        return response.json( points);
+    }
+    async show(request: Request, response: Response) {
         const { id } = request.params;
 
-        const point = await knex('point').where('id', id).first();
+        const point = await knex('points').where('id', id).first();
 
         if (!point) {
             return response.status(400).json({ message: 'point not found'});
 
         }
-        return response.json(point);
+
+        const itens = await knex('itens')
+        .join('point_itens', 'itens.id', '=', 'points_itens.item_id')
+        .where('points_itens.point_id',id)
+        .select('itens.title');
+
+        return response.json({point, itens});
     } 
 
 
@@ -54,16 +75,18 @@ class pointsController {
             item_id,
             point_id,
         };
-    })
+    });
 
     await trx('points_itens').insert(pointItens);
+
+    await trx.commit();
     
     return response.json({
         id: point_id,
         ...point,
     });
  };
-
+     
 };
 
 export default pointsController;
