@@ -3,6 +3,7 @@ import knex from '../database/connection';
 
 
 class ItensController {
+    
     async index(request:Request, response: Response) {
         const itens = await knex('itens').select('*');
     
